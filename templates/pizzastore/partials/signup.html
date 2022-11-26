@@ -1,0 +1,23 @@
+{% load tailwind_filters  %}
+
+<div class="mt-20">
+    <h1 class="flex items-center justify-center font-bold text-gray-400 text-md lg:text-3xl">
+        Sign Up
+    </h1>
+</div>
+<form hx-post="{% url 'signup' %}" hx-target="#reg">
+    {% csrf_token %}
+    <div class="mx-96 text-center my-12 hover:shadow-lg py-2 px-2">
+        {{form|crispy }}
+        <p class="text-gray-400 my-4">Already registered? <a hx-get="{% url 'log-sign' %}" hx-target="#reg" class="text-blue-400 hover:text-blue-600 hover:cursor-pointer">Login</a></p>
+        <input  class="py-1 px-2 bg-orange-400 shadow-lg rounded-lg hover:bg-orange-600" type="submit" value="Sign Up">
+    </div>
+</form>
+<style>
+    ul{
+      color:rgb(122, 122, 122);  
+    }
+    #hint_id_username,#hint_id_password2,#hint_id_first_name{
+        color:rgb(122, 122, 122); 
+    }
+</style>

@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Pay with your cart
+{% endblock title %}
+
+{% load static %}
+{% block stripe %}
+<link rel="stylesheet" href="{% static 'css/checkout.css' %}" />
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'js/checkout.js' %}" defer></script>
+{% endblock stripe %}
+
+
+{% block content %}
+<div class="container mx-auto mt-20">
+    <div class="mx-80">
+        <h1 class="text-xl text-center my-5">Payment Details</h1>
+        <!-- Display a payment form -->
+        <form id="payment-form" class="payment-form mx-auto">
+            {% csrf_token %}
+            <div id="payment-element">
+                <!--Stripe.js injects the Payment Element-->
+            </div>
+            <button id="submit" class="pay-btn">
+                <div class="spinner hidden" id="spinner"></div>
+                <span id="button-text">Pay now</span>
+            </button>
+            <div id="payment-message" class="hidden"></div>
+        </form>
+    </div>
+</div>
+{% endblock content %}

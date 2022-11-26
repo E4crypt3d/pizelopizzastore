@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Checkout
+{% endblock title %}
+
+
+{% block content %}
+<div class="mt-20">
+    <h1 class="flex items-center justify-center font-bold text-gray-400 text-md lg:text-3xl">
+        Checkout
+    </h1>
+</div>
+<div class="container p-12 mx-auto">
+    <div class="flex flex-col w-full px-0 mx-auto md:flex-row">
+        <div class="flex flex-col md:w-full">
+            {% if carts%}
+            <h2 class="mb-4 font-bold md:text-xl text-heading ">Shipping Address
+            </h2>
+            <form class="justify-center w-full mx-auto" method="post" action="{% url 'order' %}">
+                {% csrf_token %}
+                <div class="">
+                    <div class="lg:flex">
+                        <div class="w-full">
+                            <label for="name" class="block mb-3 text-sm font-semibold text-gray-400">Name<span
+                                    class="text-red-500">*</span></label>
+                            <input name="name" autocomplete="on" type="text" placeholder="Name"
+                                value="{{user.shippinguser.name}}"
+                                class="text-black w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="w-full">
+                            <label for="email" class="block mb-3 text-sm font-semibold text-gray-400">Email<span
+                                    class="text-red-500">*</span></label>
+                            <input name="email" type="text" value="{{user.shippinguser.email}}" autocomplete="on"
+                                placeholder="Email"
+                                class="text-black w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="w-full">
+                            <label for="paymethod" class="block mb-3 text-sm font-semibold text-gray-400">Payment Method<span
+                                    class="text-red-500">*</span></label>
+                            <select name="paymethod" type="text" value="{{user.shippinguser.email}}" autocomplete="on"
+                                placeholder="Select your payment method"
+                                class="text-black w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                                <option value="Cash On Delivery">Cash On Delivery</option>
+                                <option value="Pay Online">Pay Online</option>
+                            </select>
+                            </div>
+                    </div>
+                    <div class="mt-4">
+                        <div class="w-full">
+                            <label for="Address" class="block mb-3 text-sm font-semibold text-gray-400">Address<span
+                                    class="text-red-500">*</span></label>
+                            <textarea
+                                class="text-black w-full px-4 py-3 text-xs border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600"
+                                name="address" cols="20" rows="4"
+                                placeholder="Address">{{user.shippinguser.address}}</textarea>
+                        </div>
+                    </div>
+                    <div class="lg:flex">
+                        <div class="w-full">
+                            <label for="city" class="block mb-3 text-sm font-semibold text-gray-400">City</label>
+                            <input name="city" type="text" placeholder="City" value="{{user.shippinguser.city}}"
+                                class="text-black w-full px-4 py-3 text-sm border border-gray-300 rounded lg:text-sm focus:outline-none focus:ring-1 focus:ring-blue-600">
+                        </div>
+                    </div>
+                    <div class="flex items-center mt-4">
+                        <label class="flex items-center text-sm group text-heading">
+                            <input type="checkbox" name="rememberme" {% if user.shippinguser %}checked{% endif %}
+                                class="text-black w-5 h-5 border border-gray-300 rounded focus:outline-none focus:ring-1">
+                            <span class="ml-2">{% if user.shippinguser %}Already saved ( uncheck to clear ) {% else %}Save this information for next time{% endif %}</span></label>
+                    </div>
+                    <div class="mt-4">
+                        <button class="w-full px-6 py-2 text-blue-200 bg-blue-600 hover:bg-blue-900">Process</button>
+                    </div>
+                </div>
+            </form>
+            {% else %}
+            <h1 class="text-2xl text-gray-400 tracking-wider font-bold text-center mt-5">No Items in the cart</h1>
+            <p class="text-sm text-gray-500 text-center">add some items to your cart</p>
+            {% endif %}
+        </div>
+        <div id="sidecart" class="flex flex-col w-full ml-0 lg:ml-12 lg:w-2/5">
+            {% include 'pizzastore/partials/sidecart.html' %}
+        </div>
+    </div>
+</div>
+{% endblock content %}

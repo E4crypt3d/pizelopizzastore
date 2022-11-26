@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block orders %}active{% endblock %}
+
+{% block title %}
+Thank for your purchase
+{% endblock title %}
+
+
+
+{% block content %}
+<section class="text-gray-600 body-font overflow-hidden">
+    <div class="container px-5 py-24 mx-auto">
+        <div class="flex flex-col text-center w-full mb-20">
+            
+            {% if  orders %}
+            <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">Your Orders</h1>
+            <p class="lg:w-2/3 mx-auto leading-relaxed text-base text-gray-400">Different type of pizza take different time to bake so you will see different delivery and order ids for different pizzas.</p>
+            {% else %}
+            <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">No Orders placed yet</h1>
+
+            {% endif %}
+        </div>
+        <div class="flex flex-wrap -m-4 text-white justify-center">
+            {% for order in orders  %}
+            <div class="p-4 xl:w-1/4 md:w-1/2 w-full hover:shadow-gray-700 hover:shadow-inner">
+                <div class="h-full p-6 rounded-lg border-2 border-gray-300 flex flex-col relative overflow-hidden">
+                    <h2 class="text-sm tracking-widest title-font mb-1 font-medium">Order ID: {{order.order_id}}</h2>
+                    <h1 class="text-lg font-bold text-gray-900 pb-4 mb-4 border-b border-gray-200 leading-none">Pizza: {{order.order_item}}</h1>
+                    <p class="flex items-center text-gray-400 mb-2">
+                        <span
+                            class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                <path d="M20 6L9 17l-5-5"></path>
+                            </svg>
+                        </span><span class="font-bold">Ordered On</span> : {{order.order_on | date}}
+                    </p>
+                    <p class="flex items-center text-gray-400 mb-6">
+                        <span
+                            class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                <path d="M20 6L9 17l-5-5"></path>
+                            </svg>
+                        </span><span class="font-bold">Item</span> : {{order.order_quantity}}
+                    </p>
+                    <p class="flex items-center text-gray-400 mb-6">
+                        <span
+                            class="w-4 h-4 mr-2 inline-flex items-center justify-center bg-gray-400 text-white rounded-full flex-shrink-0">
+                            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                stroke-width="2.5" class="w-3 h-3" viewBox="0 0 24 24">
+                                <path d="M20 6L9 17l-5-5"></path>
+                            </svg>
+                        </span><span class="font-bold">Total Price</span> : {{order.order_total}} 
+                        {% if order.online_pay %}
+                            (Paid)
+                        {% endif %}
+                            
+                    </p>
+                        <div>
+                            <a type="button" href="{% url 'track' order.order_id %}"
+                            class="hover:shadow-md flex items-center mt-auto text-white bg-gray-400 border-0 py-2 px-4 w-full focus:outline-none hover:bg-gray-500 rounded">Track your order</a>
+                            <svg class="relative -right-44 -top-[35px] w-8" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2" class="w-4 h-4 ml-auto" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7"></path>
+                        </svg>
+                    </div>
+                    <p class="text-xs text-gray-500 mt-3"><span class="font-bold">Address</span>  : {{order.address}}</p>
+                    <p class="text-xs text-gray-500 mt-3"><span class="font-bold">Payment Method</span> :
+                    {% if order.online_pay %}
+                        Online Payment
+                {% else %}        
+                    Cash On Delivery
+                    {% endif %}
+                </p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div id="cart">
+
+    </div>
+</section>
+{% endblock content %}

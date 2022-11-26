@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Contact Us
+{% endblock title %}
+{% block contact %}active{% endblock %}
+
+
+{% block content %}
+<section class="text-gray-300 body-font relative">
+  <h1 class="font-bold text-xl text-center mt-20">Contact Us</h1>
+  <p class="text-base text-gray-400 text-center">Have a complain or suggestion? Contact Us we will get back to you soon
+  </p>
+  <div class="container px-5 py-24 mx-auto flex sm:flex-nowrap flex-wrap">
+    <div class="lg:w-2/3 md:w-1/2 rounded-lg overflow-hidden sm:mr-10 p-10 flex items-end justify-start relative">
+      <iframe width="100%" height="100%" class="absolute inset-0" frameborder="0" title="map" marginheight="0"
+        marginwidth="0" scrolling="no"
+        src="https://maps.google.com/maps?width=600&amp;height=400&amp;hl=en&amp;q=new york&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed"
+        style="filter: grayscale(1) contrast(1.2) opacity(0.5);"></iframe>
+      <div class="bg-gray-600 relative flex flex-wrap py-6 rounded shadow-md">
+        <div class="lg:w-1/2 px-6">
+          <h2 class="title-font font-semibold text-gray-900 tracking-widest text-xs">ADDRESS</h2>
+          <p class="mt-1">8624 Keira Loaf, Luettgenton, New Jersey</p>
+        </div>
+        <div class="lg:w-1/2 px-6 mt-4 lg:mt-0">
+          <h2 class="title-font font-semibold text-gray-900 tracking-widest text-xs">EMAIL</h2>
+          <a class="text-indigo-500 leading-relaxed">example@email.com</a>
+          <h2 class="title-font font-semibold text-gray-900 tracking-widest text-xs mt-4">PHONE</h2>
+          <p class="leading-relaxed">123-456-7890</p>
+        </div>
+      </div>
+    </div>
+    <div class="lg:w-1/3 md:w-1/2 flex flex-col md:ml-auto w-full md:py-8 mt-8 md:mt-0">
+
+      <div class="text-center px-2 py-2 successfully-saved font-bold" id="submit-alert"></div>
+      <p class="htmx-indicator" id="sending">Sending your message. Please Wait... <img class="inline"
+        src="https://img.icons8.com/color/48/null/spinner-frame-6.png" style="width: 30px; animation:spin 3s infinite;"/></p>
+      <h2 class="text-gray-900 text-lg mb-1 font-medium title-font">Feedback</h2>
+      <p class="leading-relaxed mb-5 text-gray-400">Write your complaint or Feedback to us</p>
+      <form hx-post="{% url 'contact' %}" hx-target="#submit-alert" id="contact" method="post" hx-indicator="#sending">
+        {% csrf_token %}
+        <div class="relative mb-4">
+          <label for="name" class="leading-7 text-sm text-gray-400">Name</label>
+          <input type="text" id="name" name="name" placeholder="Name" required maxlength="60" minlength="3"
+            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+        <div class="relative mb-4">
+          <label for="email" class="leading-7 text-sm text-gray-400">Email</label>
+          <input type="email" id="email" name="email" placeholder="Email" required
+            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+        </div>
+        <div class="relative mb-4">
+          <label for="message" class="leading-7 text-sm text-gray-400">Message</label>
+          <textarea id="message" name="message" required
+            class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 h-32 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+        </div>
+        <button type="submit"
+          class="text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">Submit</button>
+      </form>
+      <p class="text-xs text-gray-500 mt-3">We will get back to your as soon as possible.
+      </p>
+    </div>
+  </div>
+  <div id="cart"></div>
+</section>
+<script>
+  const contactForm = document.getElementById('contact');
+  contactForm.addEventListener('submit', () => {
+    document.getElementById('sending').scrollIntoView();
+    setTimeout(function () {
+      const submitAlert = document.getElementById('alert');
+      submitAlert.style.opacity = 0;
+      submitAlert.remove();
+      contactForm.reset();
+      document.getElementById('submit-alert').scrollIntoView();
+    }, 8000);
+  });
+</script>
+{% endblock content %}

@@ -1,0 +1,86 @@
+{% if carts %}
+<div class="overflow-x-auto relative">
+    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <thead class="text-center text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-800 dark:text-gray-400">
+
+        </thead>
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="py-3 px-6">
+                    Product name
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    ingredients
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Quantity
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Category
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    Price
+                </th>
+                <th scope="col" class="py-3 px-6 text-center">
+                    Remove Item
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cart in carts %}
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <th scope="row" class="py-4 px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <img src="{{MEDIA_URL}}{{cart.product.image}}" class="w-9 inline max-h-8 max-w-2" alt="">
+                    {{cart.product}}
+                </th>
+                <td class="py-4 px-6">
+                    {{cart.product.ingredients}}
+                </td>
+                <td class="py-4 px-6">
+                    <a hx-post="{% url 'add' %}" hx-target="#cart" hx-vals='{"item":{{cart.id}},"action":"add"}' hx-headers='{"X-CSRFToken":"{{csrf_token}}"}'><img class="inline w-5 hover:bg-green-600 mr-1" src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/null/external-add-cart-commerce-dreamstale-lineal-dreamstale.png"/></a>
+                        {{cart.quantity}}
+                        <a hx-post="{% url 'remove' %}" hx-target="#cart" hx-vals='{"item":{{cart.id}},"action":"remove"}' hx-headers='{"X-CSRFToken":"{{csrf_token}}"}'><img class="inline w-5 hover:bg-red-600 ml-1" src="https://img.icons8.com/external-dreamstale-lineal-dreamstale/32/null/external-remove-from-cart-commerce-dreamstale-lineal-dreamstale.png"/></a>
+
+                </td>
+                <td class="py-4 px-6">
+                    {{cart.product.category}}
+                </td>
+                <td class="py-4 px-6">
+                    Rs.{{cart.total_price}}
+                </td>
+                <td class="hover:bg-slate-400 font-serif font-bold hover:text-black py-4 px-6 text-center">
+                    <button hx-post="{% url 'deleteitem' cart.id %}" hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                        hx-target="#cart">
+                        Remove
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr class="border border-white text-gray-900">
+                <th scope="col" class="py-3 px-6 bg-gray-400">
+                    Total Products
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    {{cart_totals.total_products}}
+                </th>
+                <th scope="col" class="py-3 px-6 bg-gray-400">
+                    Total Price
+                </th>
+                <th scope="col" class="py-3 px-6">
+                    {{cart_totals.total_price}}
+                </th>
+                <th scope="col" class="py-3 px-6 text-center hover:bg-slate-800 font-serif font-bold hover:text-white">
+                    <button hx-confirm="Are you sure?" hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'
+                        hx-post="{% url 'clearcart' %}" hx-target="#cart">Clear Cart</button>
+                </th>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="flex">
+    <a class="mx-auto py-2 px-3 bg-red-600 hover:bg-red-700 hover:rounded-lg hover:text-black rounded-xl text-white mt-4"
+        href="{% url 'checkout' %}">Checkout</a>
+</div>
+{% else %}
+<h1 class="text-center text-2xl text-gray-400">No items in your cart</h1>
+{% endif %}

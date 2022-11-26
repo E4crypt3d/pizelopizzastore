@@ -1,0 +1,56 @@
+<div class="pt-12 md:pt-0 2xl:ps-4">
+    <h2 class="text-xl font-bold">Order Summary
+    </h2>
+    <div class="mt-8">
+        <div class="flex flex-col space-y-4">
+            {% for cart in carts %}
+            <div class="flex space-x-4 hover:shadow-lg">
+                <div class="relative">
+                    <img src="{{MEDIA_URL}}{{cart.product.image}}" alt="image" class="w-36 max-h-20 max-w-10">
+                    <h6 class="absolute top-0 right-0 pl-1 pr-1 bg-black text-red-500">{{cart.quantity}}x</h6>
+                </div>
+                <div>
+                    <h2 class="text-sm font-bold">{{cart.product|truncatechars:10 }}</h2>
+                    <p class="text-sm">{{ cart.product.ingredients|truncatechars:10 }}</p>
+                    <span class="text-red-600">Price</span> Rs.{{cart.product.price}}
+                </div>
+                <div>
+                    <a class="hover:cursor-pointer hover:text-red-600" hx-target="#sidecart" hx-post="{% url 'deleteitem' cart.pk %}" hx-vals='{"sidecart": true}' hx-headers='{"X-CSRFToken": "{{csrf_token}}"}'>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="flex p-4 mt-4">
+        <h2 class="text-xl font-bold">ITEMS 
+            
+            {% if not cart_totals.total_products %}
+            0        
+            {% else %}
+            {{cart_totals.total_products}}
+            {% endif %}
+        </h2>
+                
+    </div>
+    <div
+        class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">
+        Subtotal<span class="ml-2">Rs.{{cart_totals.total_price}}</span></div>
+    <div
+        class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">
+        Shipping Tax<span class="ml-2">Rs.{{tax}}</span></div>
+    <div
+        class="flex items-center w-full py-4 text-sm font-semibold border-b border-gray-300 lg:py-5 lg:px-3 text-heading last:border-b-0 last:text-base last:pb-0">
+        Total
+        {% if cart_totals.total_price != 0 %}
+        <span class="ml-2">Rs.{{cart_totals.total_price|add:tax}}</span>
+        {% else %}
+        <span class="ml-2">Rs.{{cart_totals.total_price}}</span>
+        {% endif %}
+    </div>
+</div>

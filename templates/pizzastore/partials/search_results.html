@@ -1,0 +1,21 @@
+<div
+    class="absolute invisible group-hover:visible -right-8 shadow-md shadow-slate-800 lg:-right-7 rounded bg-slate-400 hover:text-black bg-opacity-20 hover:bg-opacity-70 z-10 w-80 text-center">
+    <div class="grid grid-cols-4 border border-gray-500">
+        {% for pizza in pizza_search %}
+        <div class="col-span-2 border">
+            <img src="{{MEDIA_URL}}{{pizza.image}}" class="float-left mt-1 w-9 inline h-7 max-h-8 max-w-2" alt="">
+            <p class="inline float-right">{{pizza.pizza_name}}</p>
+        </div>
+        <div class="border">{{pizza.price}}</div>
+        <div class="border">
+            <form>
+                <input type="hidden" value="{{pizza.id}}" name="product">
+                {% csrf_token %}
+                <button hx-post="{% url 'add-cart' %}" hx-target="#cart"
+                    class="text-white rounded hover:text-black border border-red-500 bg-red-500 hover:bg-red-600 hover:border-red-600">Add
+                    to Cart</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>

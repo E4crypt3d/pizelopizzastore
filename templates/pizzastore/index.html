@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  We sell the best pizzas in the town
+{% endblock title %}
+
+{% block homeactive %}active{% endblock %}
+
+{% block content %}
+<section class="text-gray-600 body-font">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="flex flex-wrap -m-4">
+        {% for pizza in pizzas %}
+        <div class="p-4 md:w-1/3">
+          <div class="h-full hover:shadow-2xl rounded-lg overflow-hidden">
+            <img class="lg:h-64 md:h-36 w-full object-cover object-center" src="{{MEDIA_URL}}{{pizza.image}}"
+              alt="{{pizza.pizza_name}}">
+            <div class="p-6">
+              <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">{{pizza.category}}</h2>
+              <h2 class="tracking-widest text-xs title-font font-medium text-gray-400 mb-1">Baking Time : {{pizza.baking_time}} minutes</h2>
+              <h1 class="title-font text-lg font-medium text-gray-900 mb-3">{{pizza.pizza_name}}</h1>
+              <p class="leading-relaxed text-white mb-3">{{pizza.ingredients}}</p>
+              {% if user.is_authenticated %}
+              <form>
+                <input type="hidden" value="{{pizza.id}}" name="product">
+                {% csrf_token %}
+                <button hx-post="{% url 'add-cart' %}" hx-target="#cart" class="text-white rounded hover:text-black border border-red-500 px-4 py-1 bg-red-500 hover:bg-red-600 hover:border-red-600">Add to Cart</button>
+              </form>
+              {% else %}
+              <a href="{% url 'log-sign' %}" class="hover:cursor-pointer text-white rounded hover:text-black border border-red-500 px-4 py-1 bg-red-500 hover:bg-red-600 hover:border-red-600">Add to Cart</a>
+              {% endif %}
+              {% if pizza.compare_price %}
+              <h2 class="float-right text-black"><b>Price Rs. {{pizza.price}}</b> <span class="text-orange-500"><del>{{pizza.compare_price}}</del></span></h2>
+              {% else %}
+              <h2 class="float-right text-black"><b>Price Rs.</b> {{pizza.price}} </h2>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+  <h1 class="text-2xl text-center font-serif">Your Cart</h1>
+  <div class="my-4 container mx-auto" id="cart">
+    {% include 'pizzastore/partials/cart.html' %}
+    
+  </div>
+{% endblock content %}
+    
