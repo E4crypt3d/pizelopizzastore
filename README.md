@@ -1,5 +1,5 @@
 # Pizelo Pizza Store
-Pizelo Pizza Store is a web-based pizza ordering system that allows customers to select and order pizzas online. The application has been developed using Django, a Python web framework.
+Pizelo Pizza Store is a web-based pizza ordering system that allows customers to select and order pizzas online. The application has been developed using `Django`, a Python web framework, `Django Channels`, `HTMX`.
 
 ## Features
 - Users can create an account, log in, and manage their profile.
